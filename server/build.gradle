@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.8'
+}
+
+mainClassName = 'nl.tudelft.oopp.demo.DatabaseApplication'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+dependencies {
+	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Local test database (in-memory)
+	implementation 'com.h2database:h2'
+	developmentOnly 'org.hibernate:hibernate-entitymanager'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	compile 'commons-validator:commons-validator:1.6'
+	compile 'org.apache.commons:commons-text:1.8'
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.boot:spring-boot-starter-mail")
+	compile 'com.auth0:java-jwt:3.4.0'
+
+	// Use MySQL Connector-J
+	compile 'mysql:mysql-connector-java'
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
